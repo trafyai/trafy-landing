@@ -10,11 +10,26 @@ import Article from '@public/assets/Images/landing-page/hero/article.svg'
 const LandingHero = () => {
     const router = useRouter();
 
-    function handleNavigate(){
-    
-         router.push('/signup')
-  
-    }
+    const handleGetStarted = async() =>{
+        try {
+          const response = await fetch('http://localhost:5000/api/getSessionCookie', {
+              method: 'GET',
+              credentials: 'include', // Important to send cookies
+          });
+      
+          if (response.ok) {
+            window.location.href = 'http://localhost:3000/';
+          }
+          else{
+            window.location.href = 'http://localhost:3000/login';
+      
+          }
+      } catch (error) {
+          // Optionally log other types of errors
+          console.error('Error fetching session cookie:', error);
+      }
+       }
+       
     return (
         <main>
             <div className="landing-hero-section">
@@ -26,7 +41,7 @@ const LandingHero = () => {
                         <div className="landing-hero-paragraph">
                             <p>Design, Marketing, Sales, and Startup courses curated for your growth by your Personalized AI Mentor.</p>
                         </div>
-                        <div className="landing-hero-explore-btn" onClick={handleNavigate}>
+                        <div className="landing-hero-explore-btn" onClick={handleGetStarted}>
                             Get started
                         </div>
                     </div>

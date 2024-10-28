@@ -83,16 +83,23 @@ const Header = () => {
     setHover(!hover);
   };
 
-  const handleLogOut = async () => {
-    try {
-      await logOut();
-      setHover(false);
-      router.push("/");
-      router.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ const handleGetStarted = async() =>{
+  try {
+    const response = await fetch('http://localhost:5000/api/getSessionCookie', {
+        method: 'GET',
+        credentials: 'include', // Important to send cookies
+    });
+const data = await response.json();
+if(data.success == true){
+      window.location.href = 'http://localhost:3000/';
+  }
+  else{
+          window.location.href = 'http://localhost:3000/login';
+  }
+} catch (error) {
+    console.error('Error fetching session cookie:', error);
+}
+ }
 
   return (
     <div className="navbar">
@@ -130,13 +137,9 @@ const Header = () => {
           </div>
           <div className="menu-right-d">
            
-              <Link
-                href="http://localhost:3001/login"
-                className="menu-signup"
-                onClick={() => handleNavigation("http://localhost:3001/login")}
-              >
+              <div className="menu-signup" onClick={handleGetStarted} >
                 Get Started
-              </Link>
+              </div>
     
           </div>
         </div>
@@ -184,13 +187,9 @@ const Header = () => {
               </div>
             
               <div className="menu-right">
-                  <Link
-                    href="http://localhost:3001/login"
-                    className="menu-signup"
-                    onClick={() => handleNavigation("http://localhost:3001/login")}
-                  >
+                  <div className="menu-signup" onClick={handlGetStarted}>
                     Get Started
-                  </Link>
+                  </div>
               </div>
             </div>
           )}
